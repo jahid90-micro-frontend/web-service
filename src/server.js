@@ -16,6 +16,7 @@ const getPageIdForPath = (path) => {
     switch (path) {
         case '/': return 1;
         case '/about': return 2;
+        case '/minance': return 3;
         case '/todos': return 4;
         default: return 404;
     }
