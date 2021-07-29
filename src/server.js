@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 
+const uris = require('./config/uris');
+
 // Create the server
 const app = express();
 
@@ -27,7 +29,7 @@ app.get('*', async (req, res) => {
     const pageId = getPageIdForPath(req.path);
     console.log(`page id resolved to ${pageId} for path "${req.path}"`);
 
-    const pResp = await axios.post('http://page.service', { pageId });
+    const pResp = await axios.post(`http://${uris.PAGE_SERVICE_URI}`, { pageId });
     res.send(pResp.data);
 
 });
