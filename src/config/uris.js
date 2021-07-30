@@ -1,3 +1,3 @@
 module.exports = {
-    PAGE_SERVICE_URI: process.env.PAGE_SERVICE_URI
+    ASSEMBLER_SERVICE_URI: process.env.ASSEMBLER_SERVICE_URI
 }

@@ -2,6 +2,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
+const path = require('path');
 
 const uris = require('./config/uris');
 
@@ -10,6 +11,8 @@ const app = express();
 
 // Configuration
 app.use(morgan('tiny'));
+
+app.use('/static', express.static(path.join(__dirname, 'assets')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -24,12 +27,12 @@ const getPageIdForPath = (path) => {
     }
 };
 
-app.get('*', async (req, res) => {
+app.get('/', async (req, res) => {
 
     const pageId = getPageIdForPath(req.path);
     console.log(`page id resolved to ${pageId} for path "${req.path}"`);
 
-    const pResp = await axios.post(`http://${uris.PAGE_SERVICE_URI}`, { pageId });
+    const pResp = await axios.post(`http://${uris.ASSEMBLER_SERVICE_URI}`, { pageId });
     res.send(pResp.data);
 
 });
