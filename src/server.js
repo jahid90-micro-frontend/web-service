@@ -27,12 +27,16 @@ const getPageIdForPath = (path) => {
     }
 };
 
-app.get('/', async (req, res) => {
+app.get('/widgets/*', async (req, res) => {
+    res.sendStatus(404);
+});
+
+app.get('*', async (req, res) => {
 
     const pageId = getPageIdForPath(req.path);
     console.log(`page id resolved to ${pageId} for path "${req.path}"`);
 
-    const pResp = await axios.post(`http://${uris.ASSEMBLER_SERVICE_URI}`, { pageId });
+    const pResp = await axios.post(`http://${uris.ASSEMBLER_SERVICE_URI}`, { pageId }, { params: { ...req.query } });
     res.send(pResp.data);
 
 });
