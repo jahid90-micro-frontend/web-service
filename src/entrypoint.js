@@ -1,3 +1,9 @@
+// Initialize tracing
+const { init } = require('@jahiduls/lib-tracing');
+init();
+
+console.debug('Telemetry library initialized');
+
 // Start the server
 const server = require('./server');
 

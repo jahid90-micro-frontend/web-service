@@ -4,7 +4,7 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 
-const uris = require('./config/uris');
+const assemblerService = require('./clients/assembler-service-client');
 
 // Create the server
 const app = express();
@@ -39,8 +39,8 @@ app.get('*', async (req, res) => {
         
         console.debug(`Request: {path: ${req.path}}`);
 
-        const pResp = await axios.post(`http://${uris.ASSEMBLER_SERVICE_URI}`, { pageId }, { params: { ...req.query } });
-        res.send(pResp.data);
+        const response = await assemblerService.tracedGet({ pageId }, { params: { ...req.query } });
+        res.send(response.data);
 
     } catch(err) {
 
@@ -51,8 +51,4 @@ app.get('*', async (req, res) => {
 
 });
 
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`server is up and running on port: ${port}`);
-});
+module.exports = app;
