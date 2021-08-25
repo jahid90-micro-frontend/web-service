@@ -1,5 +1,3 @@
-const axios = require('axios');
-const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
@@ -14,8 +12,8 @@ app.use(morgan('tiny'));
 
 app.use('/static', express.static(path.join(__dirname, 'assets')));
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const getPageIdForPath = (path) => {
     switch (path) {
@@ -27,7 +25,15 @@ const getPageIdForPath = (path) => {
     }
 };
 
-app.get('/widgets/*', async (req, res) => {
+app.get('/widgets/*', async (_, res) => {
+    res.sendStatus(404);
+});
+
+app.get('/modules/*', async (_, res) => {
+    res.sendStatus(404);
+});
+
+app.get('/favicon.ico', (_, res) => {
     res.sendStatus(404);
 });
 
@@ -36,7 +42,7 @@ app.get('*', async (req, res) => {
     try {
 
         const pageId = getPageIdForPath(req.path);
-        
+
         console.debug(`Request: {path: ${req.path}}`);
 
         const response = await assemblerService.tracedGet({ pageId }, { params: { ...req.query } });
